@@ -1,0 +1,22 @@
+{
+  "name": "uni-vietqr",
+  "version": "1.0.0",
+  "description": "A utility package for generating and handling VietQR codes.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/**/*.test.js",
+    "build": "echo 'No build step required for this package'",
+    "publish": "npm publish",
+    "prepublishOnly": "npm test"
+  },
+  "keywords": [
+    "vietqr",
+    "qr-code",
+    "utilities"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^10.0.0"
+  }
+}
