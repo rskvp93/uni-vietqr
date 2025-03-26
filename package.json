@@ -4,10 +4,11 @@
   "description": "A utility package for generating and handling VietQR codes.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/**/*.test.js",
+    "test": "npx mocha test/**/*.test.js",
     "build": "echo 'No build step required for this package'",
     "publish": "npm publish",
-    "prepublishOnly": "npm test"
+    "prepublishOnly": "npm test",
+    "prepare": "npm install"
   },
   "keywords": [
     "vietqr",
