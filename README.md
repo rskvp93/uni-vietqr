@@ -71,6 +71,53 @@ try {
 }
 ```
 
+### `decodeVietQR(qrCode)`
+
+Decodes a VietQR code string and extracts its components.
+
+#### Parameters
+
+- `qrCode` (string, required): The VietQR code string to decode.
+
+#### Returns
+
+- `Object`: An object containing the decoded components:
+  - `bankId` (string): The bank ID.
+  - `accountNumber` (string): The recipient's account number.
+  - `accountName` (string, optional): The recipient's account name.
+  - `amount` (number, optional): The transfer amount.
+  - `message` (string, optional): The transfer message.
+
+#### Example
+
+```javascript
+const { decodeVietQR } = require('uni-vietqr');
+
+const qrCode = '000201010211260600A0000007279704180112312345678902541000.5062Payment for invoice #1236304';
+const result = decodeVietQR(qrCode);
+
+console.log(result);
+// Output:
+// {
+//   bankId: '970418',
+//   accountNumber: '123456789',
+//   amount: 1000.5,
+//   message: 'Payment for invoice #123'
+// }
+```
+
+#### Error Handling
+
+Throws an error if the QR code string is invalid.
+
+```javascript
+try {
+  decodeVietQR('');
+} catch (error) {
+  console.error(error.message); // Output: "Invalid QR code string."
+}
+```
+
 ## Features
 
 ✅ Generate QR codes based on VietQR format  

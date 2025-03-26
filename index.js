@@ -57,6 +57,51 @@ function calculateCRC(data) {
   return (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
 }
 
+/**
+ * Decodes a VietQR code string and extracts its components.
+ * @param {string} qrCode - The VietQR code string to decode.
+ * @returns {Object} - An object containing the decoded components.
+ */
+function decodeVietQR(qrCode) {
+  if (!qrCode || typeof qrCode !== 'string') {
+    throw new Error("Invalid QR code string.");
+  }
+
+  const components = {};
+  const regex = /(\d{2})(\d{2})([A-Za-z0-9]+)/g;
+  let match;
+
+  while ((match = regex.exec(qrCode)) !== null) {
+    const tag = match[1];
+    const length = parseInt(match[2], 10);
+    const value = match[3].substring(0, length);
+
+    switch (tag) {
+      case '26': // Bank ID
+        components.bankId = value.substring(8); // Skip "A000000727"
+        break;
+      case '01': // Account number
+        components.accountNumber = value;
+        break;
+      case '02': // Account name
+        components.accountName = value;
+        break;
+      case '54': // Amount
+        components.amount = parseFloat(value);
+        break;
+      case '62': // Message
+        components.message = value;
+        break;
+      default:
+        // Ignore unknown tags
+        break;
+    }
+  }
+
+  return components;
+}
+
 module.exports = {
-  generateVietQR
+  generateVietQR,
+  decodeVietQR
 };
