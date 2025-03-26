@@ -1,0 +1,24 @@
+name: Run Tests Periodically
+
+on:
+  schedule:
+    - cron: '*/1 * * * *' # Schedule to run every minute
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run test.sh script
+        run: bash ./test/test.sh
