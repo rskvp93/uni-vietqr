@@ -1,6 +1,6 @@
 {
   "name": "uni-vqr",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A utility package for generating and handling VietQR codes.",
   "main": "index.js",
   "scripts": {
