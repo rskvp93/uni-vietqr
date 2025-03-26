@@ -1,5 +1,5 @@
 {
-  "name": "uni-vietqr",
+  "name": "uni-vqr",
   "version": "1.0.0",
   "description": "A utility package for generating and handling VietQR codes.",
   "main": "index.js",
@@ -11,7 +11,7 @@
     "prepare": "echo 'Prepare script executed' && exit 0"
   },
   "keywords": [
-    "vietqr",
+    "uni-vqr",
     "qr-code",
     "utilities"
   ],
