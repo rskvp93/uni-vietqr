@@ -20,10 +20,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16'
+          cache: 'npm' # Enable caching for faster builds
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci # Use npm ci for clean installs
 
       - name: Run tests
         run: npm test

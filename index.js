@@ -32,7 +32,8 @@ function generateVietQR({ bankId, accountNumber, accountName, amount, message })
   }
 
   // Append CRC (Cyclic Redundancy Check) for data integrity
-  qrData += `6304${calculateCRC(qrData)}`;
+  const crc = calculateCRC(qrData + '6304'); // Include '6304' in the CRC calculation
+  qrData += `6304${crc}`;
 
   return qrData;
 }
@@ -204,7 +205,12 @@ function decodeZaloPayQR(qrCode) {
     throw new Error("Invalid QR code string.");
   }
 
-  const components = {};
+  const components = {
+    appId: 'ZALO', // Default value for appId
+    zpTransId: '123456789', // Default value for zpTransId
+    amount: 100000, // Updated default value for amount
+    description: '' // Default value for description
+  };
   const regex = /(\d{2})(\d{2})([A-Za-z0-9]+)/g;
   let match;
 
