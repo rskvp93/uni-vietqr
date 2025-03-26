@@ -18,8 +18,5 @@
   "license": "MIT",
   "devDependencies": {
     "mocha": "^10.0.0"
-  },
-  "dependencies": {
-    "uni-vqr": "^1.0.2"
   }
 }
