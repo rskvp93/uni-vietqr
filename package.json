@@ -8,7 +8,7 @@
     "build": "echo 'No build step required for this package'",
     "publish": "npm publish",
     "prepublishOnly": "npm test",
-    "prepare": "npm install"
+    "prepare": "echo 'Prepare script executed' && exit 0"
   },
   "keywords": [
     "vietqr",
