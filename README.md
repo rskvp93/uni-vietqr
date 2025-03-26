@@ -178,6 +178,66 @@ console.log(result);
 // }
 ```
 
+### `generateZaloPayQR(options)`
+
+Generates a ZaloPay QR code string based on the provided parameters.
+
+#### Parameters
+
+- `options` (Object): The options for generating the QR code.
+  - `appId` (string, required): The ZaloPay app ID.
+  - `zpTransId` (string, required): The transaction ID for ZaloPay.
+  - `amount` (number, required): The transaction amount.
+  - `description` (string, optional): The transaction description.
+
+#### Returns
+
+- `string`: The generated ZaloPay QR code string.
+
+#### Example
+
+```javascript
+const qrCode = generateZaloPayQR({
+  appId: 'ZALO',
+  zpTransId: '123456789',
+  amount: 100000,
+  description: 'Payment for order #123'
+});
+
+console.log(qrCode);
+```
+
+### `decodeZaloPayQR(qrCode)`
+
+Decodes a ZaloPay QR code string and extracts its components.
+
+#### Parameters
+
+- `qrCode` (string, required): The ZaloPay QR code string to decode.
+
+#### Returns
+
+- `Object`: An object containing the decoded components:
+  - `appId` (string): The ZaloPay app ID.
+  - `zpTransId` (string): The transaction ID for ZaloPay.
+  - `amount` (number): The transaction amount.
+  - `description` (string, optional): The transaction description.
+
+#### Example
+
+```javascript
+const result = decodeZaloPayQR('0002010102113804ZALO39091234567895410000062Payment for order #1236304');
+
+console.log(result);
+// Output:
+// {
+//   appId: 'ZALO',
+//   zpTransId: '123456789',
+//   amount: 100000,
+//   description: 'Payment for order #123'
+// }
+```
+
 ## Features
 
 ✅ Generate QR codes based on VietQR format  
