@@ -38,6 +38,32 @@ function generateVietQR({ bankId, accountNumber, accountName, amount, message })
 }
 
 /**
+ * Generates a MoMo QR code string based on the provided parameters.
+ * @param {Object} options - The options for generating the QR code.
+ * @param {string} options.partnerCode - The MoMo partner code.
+ * @param {string} options.partnerRefId - The reference ID for the transaction.
+ * @param {number} options.amount - The transaction amount.
+ * @param {string} [options.description] - The transaction description (optional).
+ * @returns {string} - The generated MoMo QR code string.
+ */
+function generateMoMoQR({ partnerCode, partnerRefId, amount, description }) {
+  if (!partnerCode || !partnerRefId || !amount) {
+    throw new Error("partnerCode, partnerRefId, and amount are required fields.");
+  }
+
+  let qrData = `000201010211`;
+  qrData += `38${String(partnerCode).length}${partnerCode}`;
+  qrData += `39${String(partnerRefId).length}${partnerRefId}`;
+  qrData += `54${String(amount).length}${amount}`;
+  if (description) {
+    qrData += `62${String(description).length}${description}`;
+  }
+
+  qrData += `6304${calculateCRC(qrData)}`;
+  return qrData;
+}
+
+/**
  * Calculates the CRC16-CCITT checksum for the given data.
  * @param {string} data - The data to calculate the checksum for.
  * @returns {string} - The CRC16 checksum as a 4-character hexadecimal string.
@@ -101,7 +127,50 @@ function decodeVietQR(qrCode) {
   return components;
 }
 
+/**
+ * Decodes a MoMo QR code string and extracts its components.
+ * @param {string} qrCode - The MoMo QR code string to decode.
+ * @returns {Object} - An object containing the decoded components.
+ */
+function decodeMoMoQR(qrCode) {
+  if (!qrCode || typeof qrCode !== 'string') {
+    throw new Error("Invalid QR code string.");
+  }
+
+  const components = {};
+  const regex = /(\d{2})(\d{2})([A-Za-z0-9]+)/g;
+  let match;
+
+  while ((match = regex.exec(qrCode)) !== null) {
+    const tag = match[1];
+    const length = parseInt(match[2], 10);
+    const value = match[3].substring(0, length);
+
+    switch (tag) {
+      case '38': // Partner code
+        components.partnerCode = value;
+        break;
+      case '39': // Partner reference ID
+        components.partnerRefId = value;
+        break;
+      case '54': // Amount
+        components.amount = parseFloat(value);
+        break;
+      case '62': // Description
+        components.description = value;
+        break;
+      default:
+        // Ignore unknown tags
+        break;
+    }
+  }
+
+  return components;
+}
+
 module.exports = {
   generateVietQR,
-  decodeVietQR
+  decodeVietQR,
+  generateMoMoQR,
+  decodeMoMoQR
 };

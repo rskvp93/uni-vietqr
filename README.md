@@ -118,6 +118,66 @@ try {
 }
 ```
 
+### `generateMoMoQR(options)`
+
+Generates a MoMo QR code string based on the provided parameters.
+
+#### Parameters
+
+- `options` (Object): The options for generating the QR code.
+  - `partnerCode` (string, required): The MoMo partner code.
+  - `partnerRefId` (string, required): The reference ID for the transaction.
+  - `amount` (number, required): The transaction amount.
+  - `description` (string, optional): The transaction description.
+
+#### Returns
+
+- `string`: The generated MoMo QR code string.
+
+#### Example
+
+```javascript
+const qrCode = generateMoMoQR({
+  partnerCode: 'MOMO',
+  partnerRefId: '123456789',
+  amount: 50000,
+  description: 'Payment for order #123'
+});
+
+console.log(qrCode);
+```
+
+### `decodeMoMoQR(qrCode)`
+
+Decodes a MoMo QR code string and extracts its components.
+
+#### Parameters
+
+- `qrCode` (string, required): The MoMo QR code string to decode.
+
+#### Returns
+
+- `Object`: An object containing the decoded components:
+  - `partnerCode` (string): The MoMo partner code.
+  - `partnerRefId` (string): The reference ID for the transaction.
+  - `amount` (number): The transaction amount.
+  - `description` (string, optional): The transaction description.
+
+#### Example
+
+```javascript
+const result = decodeMoMoQR('0002010102113804MOMO3909123456789545000062Payment for order #1236304');
+
+console.log(result);
+// Output:
+// {
+//   partnerCode: 'MOMO',
+//   partnerRefId: '123456789',
+//   amount: 50000,
+//   description: 'Payment for order #123'
+// }
+```
+
 ## Features
 
 ✅ Generate QR codes based on VietQR format  
