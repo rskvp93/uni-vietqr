@@ -6,7 +6,6 @@
   "scripts": {
     "test": "npx mocha test/**/*.test.js",
     "build": "echo 'No build step required for this package'",
-    "publish": "npm publish",
     "prepublishOnly": "npm test",
     "prepare": "echo 'Prepare script executed' && exit 0"
   },
