@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { generateVietQR, decodeVietQR } = require('../index');
+const { generateVietQR, decodeVietQR, generateMoMoQR, decodeMoMoQR } = require('../index');
 
 describe('generateVietQR', () => {
   it('should generate a valid VietQR code with required fields', () => {
@@ -71,6 +71,63 @@ describe('decodeVietQR', () => {
 
     assert.throws(() => {
       decodeVietQR(null);
+    }, /Invalid QR code string/);
+  });
+});
+
+describe('generateMoMoQR', () => {
+  it('should generate a valid MoMo QR code with required fields', () => {
+    const qrCode = generateMoMoQR({
+      partnerCode: 'MOMO',
+      partnerRefId: '123456789',
+      amount: 50000
+    });
+    assert.ok(qrCode.includes('MOMO'));
+    assert.ok(qrCode.includes('123456789'));
+    assert.ok(qrCode.includes('50000'));
+  });
+
+  it('should include optional fields like description', () => {
+    const qrCode = generateMoMoQR({
+      partnerCode: 'MOMO',
+      partnerRefId: '123456789',
+      amount: 50000,
+      description: 'Payment for order #123'
+    });
+    assert.ok(qrCode.includes('Payment for order #123'));
+  });
+
+  it('should throw an error if required fields are missing', () => {
+    assert.throws(() => {
+      generateMoMoQR({ partnerRefId: '123456789', amount: 50000 });
+    }, /partnerCode, partnerRefId, and amount are required fields/);
+  });
+});
+
+describe('decodeMoMoQR', () => {
+  it('should decode a valid MoMo QR code string', () => {
+    const qrCode = '0002010102113804MOMO3909123456789545000062Payment for order #1236304';
+    const result = decodeMoMoQR(qrCode);
+
+    assert.strictEqual(result.partnerCode, 'MOMO');
+    assert.strictEqual(result.partnerRefId, '123456789');
+    assert.strictEqual(result.amount, 50000);
+    assert.strictEqual(result.description, 'Payment for order #123');
+  });
+
+  it('should handle missing optional fields gracefully', () => {
+    const qrCode = '0002010102113804MOMO390912345678954500006304';
+    const result = decodeMoMoQR(qrCode);
+
+    assert.strictEqual(result.partnerCode, 'MOMO');
+    assert.strictEqual(result.partnerRefId, '123456789');
+    assert.strictEqual(result.amount, 50000);
+    assert.strictEqual(result.description, undefined);
+  });
+
+  it('should throw an error for invalid QR code strings', () => {
+    assert.throws(() => {
+      decodeMoMoQR('');
     }, /Invalid QR code string/);
   });
 });
