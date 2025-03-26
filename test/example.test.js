@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { generateVietQR, decodeVietQR, generateMoMoQR, decodeMoMoQR } = require('../index');
+const { generateVietQR, decodeVietQR, generateMoMoQR, decodeMoMoQR, generateZaloPayQR, decodeZaloPayQR } = require('../index');
 
 describe('generateVietQR', () => {
   it('should generate a valid VietQR code with required fields', () => {
@@ -128,6 +128,63 @@ describe('decodeMoMoQR', () => {
   it('should throw an error for invalid QR code strings', () => {
     assert.throws(() => {
       decodeMoMoQR('');
+    }, /Invalid QR code string/);
+  });
+});
+
+describe('generateZaloPayQR', () => {
+  it('should generate a valid ZaloPay QR code with required fields', () => {
+    const qrCode = generateZaloPayQR({
+      appId: 'ZALO',
+      zpTransId: '123456789',
+      amount: 100000
+    });
+    assert.ok(qrCode.includes('ZALO'));
+    assert.ok(qrCode.includes('123456789'));
+    assert.ok(qrCode.includes('100000'));
+  });
+
+  it('should include optional fields like description', () => {
+    const qrCode = generateZaloPayQR({
+      appId: 'ZALO',
+      zpTransId: '123456789',
+      amount: 100000,
+      description: 'Payment for order #123'
+    });
+    assert.ok(qrCode.includes('Payment for order #123'));
+  });
+
+  it('should throw an error if required fields are missing', () => {
+    assert.throws(() => {
+      generateZaloPayQR({ zpTransId: '123456789', amount: 100000 });
+    }, /appId, zpTransId, and amount are required fields/);
+  });
+});
+
+describe('decodeZaloPayQR', () => {
+  it('should decode a valid ZaloPay QR code string', () => {
+    const qrCode = '0002010102113804ZALO39091234567895410000062Payment for order #1236304';
+    const result = decodeZaloPayQR(qrCode);
+
+    assert.strictEqual(result.appId, 'ZALO');
+    assert.strictEqual(result.zpTransId, '123456789');
+    assert.strictEqual(result.amount, 100000);
+    assert.strictEqual(result.description, 'Payment for order #123');
+  });
+
+  it('should handle missing optional fields gracefully', () => {
+    const qrCode = '0002010102113804ZALO3909123456789541000006304';
+    const result = decodeZaloPayQR(qrCode);
+
+    assert.strictEqual(result.appId, 'ZALO');
+    assert.strictEqual(result.zpTransId, '123456789');
+    assert.strictEqual(result.amount, 100000);
+    assert.strictEqual(result.description, undefined);
+  });
+
+  it('should throw an error for invalid QR code strings', () => {
+    assert.throws(() => {
+      decodeZaloPayQR('');
     }, /Invalid QR code string/);
   });
 });
