@@ -1,17 +1,17 @@
-# uni-vietqr
+# uni-vqr
 
 A utility package for generating and handling VietQR codes.
 
 ## Installation
 
 ```bash
-npm install uni-vietqr
+npm install uni-vqr
 ```
 
 ## Usage
 
 ```javascript
-const { generateVietQR } = require('uni-vietqr');
+const { generateVietQR } = require('uni-vqr');
 
 // Example: Generate a VietQR code
 const qrCode = generateVietQR({
@@ -91,7 +91,7 @@ Decodes a VietQR code string and extracts its components.
 #### Example
 
 ```javascript
-const { decodeVietQR } = require('uni-vietqr');
+const { decodeVietQR } = require('uni-vqr');
 
 const qrCode = '000201010211260600A0000007279704180112312345678902541000.5062Payment for invoice #1236304';
 const result = decodeVietQR(qrCode);
@@ -244,6 +244,12 @@ console.log(result);
 ✅ Parse existing VietQR codes to extract info like bank, account number, amount, message, etc.  
 ✅ Bank-agnostic — works with many Vietnamese banks  
 ✅ Follows the EMVCo standard (the global QR payment format used in VietQR)
+
+## Scripts
+
+- `test`: Runs the test suite using Mocha.
+- `build`: Placeholder for build steps (not required for this package).
+- `publish`: Publishes the package to npm.
 
 ## License
 

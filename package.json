@@ -11,7 +11,7 @@
     "prepare": "echo 'Prepare script executed' && exit 0"
   },
   "keywords": [
-    "vietqr",
+    "uni-vqr",
     "qr-code",
     "utilities"
   ],
